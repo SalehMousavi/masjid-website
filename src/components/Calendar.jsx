@@ -105,11 +105,14 @@ export default function Calendar() {
 
               {day.date.hijri.holidays.length > 0 && (
                 <ul className="text-[11px] text-blue-700 list-disc list-inside mb-1">
-                  {day.date.hijri.holidays.map((h, j) => (
-                    <li key={j}>{h}</li>
-                  ))}
+                  {day.date.hijri.holidays
+                    .filter(h => !h.startsWith('Urs') && !h.startsWith('Birth') && !h.toLowerCase().includes('mawlid') && !h.toLowerCase().includes('bara\'at') && !h.toLowerCase().includes('ragha\'ib') && !h.toLowerCase().includes('miraj'))
+                    .map((h, j) => (
+                      <li key={j}>{h}</li>
+                    ))}
                 </ul>
               )}
+
 
               {dayEvents.length > 0 && (
                 <ul className="text-[11px] text-purple-700 list-disc list-inside">
