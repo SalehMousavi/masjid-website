@@ -1,55 +1,79 @@
-import { useState } from 'react';
+import { useState } from "react";
+import {
+  FaHome,
+  FaCalendarAlt,
+  FaRegCalendarCheck,
+  FaDonate,
+  FaPhone,
+  FaBars,
+  FaTimes,
+} from "react-icons/fa";
+import { FaMosque } from "react-icons/fa";
+import logo from "../assets/logo.jpeg"; // Adjust the path if needed
 
 export default function Navbar() {
-    const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
-    return (
-        <nav className="bg-white fixed top-0 left-0 w-full z-50 shadow border-b border-gray-200">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="flex justify-between items-center h-16">
-                    {/* Logo */}
+  const navItems = [
+    { href: "#home", label: "Home", icon: <FaHome /> },
+    { href: "#prayer", label: "Prayer Times", icon: <FaMosque /> },
+    { href: "#events", label: "Events", icon: <FaRegCalendarCheck /> },
+    { href: "#calendar", label: "Calendar", icon: <FaCalendarAlt /> },
+    { href: "#donate", label: "Donate", icon: <FaDonate /> },
+    { href: "#contact", label: "Contact", icon: <FaPhone /> },
+  ];
 
-                    <div className="flex items-center space-x-3">
-                        <img
-                            src="src/assets/logo.jpeg"
-                            alt="Al Falah Logo"
-                            className="w-10 h-10 object-contain"
-                        />
-                        <span className="text-green-800 font-extrabold text-xl sm:text-2xl">
-                            Al Falah <br className="sm:hidden" /> Islamic Centre
-                        </span>
-                    </div>
-                    {/* Hamburger */}
-                    <div className="sm:hidden">
-                        <button
-                            onClick={() => setIsOpen(!isOpen)}
-                            className="text-green-800 focus:outline-none"
-                        >
-                            ☰
-                        </button>
-                    </div>
+  return (
+    <nav className="fixed top-0 w-full bg-white shadow z-50">
+      <div className="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
+        {/* Logo and title */}
+        <div className="flex items-center gap-3">
+          <img src={logo} alt="Logo" className="w-10 h-10 object-contain" />
+          <span className="text-base sm:text-xl font-bold text-green-800">
+            Al Falah
+          </span>
+        </div>
 
-                    {/* Links */}
-                    <div className="hidden sm:flex space-x-6 text-sm sm:text-base">
-                        <a href="#home" className="text-gray-800 hover:text-green-800">Home</a>
-                        <a href="#prayer" className="text-gray-800 hover:text-green-800">Prayer Times</a>
-                        <a href="#calendar" className="text-gray-800 hover:text-green-800">Calendar</a>
-                        <a href="#donate" className="text-gray-800 hover:text-green-800">Donate</a>
-                        <a href="#contact" className="text-gray-800 hover:text-green-800">Contact</a>
-                    </div>
-                </div>
+        {/* Hamburger Icon */}
+        <button
+          className="md:hidden text-green-800 text-2xl"
+          onClick={() => setIsOpen(!isOpen)}
+        >
+          {isOpen ? <FaTimes /> : <FaBars />}
+        </button>
 
-                {/* Mobile Links */}
-                {isOpen && (
-                    <div className="sm:hidden mt-2 space-y-2 pb-4">
-                        <a href="#home" className="block text-gray-800 hover:text-green-800">Home</a>
-                        <a href="#prayer" className="block text-gray-800 hover:text-green-800">Prayer Times</a>
-                        <a href="#calendar" className="block text-gray-800 hover:text-green-800">Calendar</a>
-                        <a href="#donate" className="block text-gray-800 hover:text-green-800">Donate</a>
-                        <a href="#contact" className="block text-gray-800 hover:text-green-800">Contact</a>
-                    </div>
-                )}
-            </div>
-        </nav>
-    );
+        {/* Desktop Menu */}
+        <ul className="hidden md:flex gap-6 text-sm sm:text-base font-medium text-green-900">
+          {navItems.map((item) => (
+            <li key={item.label}>
+              <a href={item.href} className="flex items-center gap-2 hover:bg-green-100 hover:text-green-700 transition-colors duration-200 transition transform duration-150 active:scale-95">
+                <span className="text-green-600">{item.icon}</span>
+                {item.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      {/* Mobile Dropdown Menu */}
+      {isOpen && (
+        <div className="md:hidden bg-white shadow-md">
+          <ul className="flex flex-col items-center gap-4 py-4 text-green-900 font-medium hover:bg-green-100 hover:text-green-700 transition-colors duration-200 transition transform duration-150 active:scale-95">
+            {navItems.map((item) => (
+              <li key={item.label}>
+                <a
+                  href={item.href}
+                  className="flex items-center gap-2 hover:text-green-600\"
+                  onClick={() => setIsOpen(false)}
+                >
+                  <span className="text-green-600">{item.icon}</span>
+                  {item.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </nav>
+  );
 }

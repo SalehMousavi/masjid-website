@@ -10,7 +10,7 @@ export default function Donate() {
         </p>
         <a
           href="https://your-donation-link.com"
-          className="inline-block bg-green-700 text-white no-underline px-6 py-3 rounded-lg text-base sm:text-lg hover:bg-green-800 transition"
+          className="inline-block bg-green-700 text-white no-underline px-6 py-3 rounded-lg text-base sm:text-lg hover:bg-white hover:text-white transition"
           target="_blank"
           rel="noopener noreferrer"
         >

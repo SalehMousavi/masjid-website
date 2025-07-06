@@ -12,7 +12,7 @@ export default function Home() {
         backgroundRepeat: "no-repeat",
       }}
     >
-      <div className="bg-white/30 backdrop-blur-sm px-4 py-6 sm:px-6 sm:py-8 rounded-xl shadow-lg w-[90%] max-w-3xl text-center">
+      <div className="bg-white/30 backdrop-blur-sm px-4 py-6 sm:px-6 sm:py-8 rounded-xl shadow-lg w-[90%] max-w-3xl text-center transition transform duration-300 ease-in-out hover:scale-105 hover:bg-green-200/30">
         <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4">
           Welcome to Al Falah Islamic Centre
         </h2>

@@ -8,10 +8,7 @@ export default function Contact() {
         <p className="text-base sm:text-lg text-gray-700 mb-2">
           Al Falah Islamic Centre
         </p>
-        {/* Uncomment and customize the address if needed */}
-        {/* <p className="text-base sm:text-lg text-gray-700 mb-2">
-          123 Unity St, Toronto, ON
-        </p> */}
+
         <p className="text-base sm:text-lg text-gray-700 mb-2">
           Email:{' '}
           <a
@@ -21,9 +18,28 @@ export default function Contact() {
             info@masjidalfalah.ca
           </a>
         </p>
-        <p className="text-base sm:text-lg text-gray-700">
+
+        <p className="text-base sm:text-lg text-gray-700 mb-2">
           Phone: (416) 123-4567
         </p>
+
+        <p className="text-base sm:text-lg text-gray-700 mt-4 flex items-center justify-center gap-3">
+  <img
+    src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"
+    alt="WhatsApp"
+    className="w-8 h-8"
+  />
+  <a
+    href="https://chat.whatsapp.com/YOUR-GROUP-LINK"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="text-green-700 hover:underline font-medium"
+  >
+    Click here to join our WhatsApp Group
+  </a>
+</p>
+
+
       </div>
     </section>
   );
