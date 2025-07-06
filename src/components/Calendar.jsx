@@ -59,94 +59,97 @@ export default function Calendar() {
   };
 
   return (
-    <div className="p-6 max-w-3xl mx-auto">
-      {/* Header */}
-      <div className="flex justify-between items-center mb-4">
-        <button
-          onClick={() => changeMonth(-1)}
-          className="bg-green-100 text-green-800 px-3 py-1 rounded hover:bg-green-200"
-        >
-          &larr; Prev
-        </button>
-        <h2 className="text-xl font-bold text-green-800">
-          {new Date(year, month - 1).toLocaleString('default', { month: 'long' })} {year}
-        </h2>
-        <button
-          onClick={() => changeMonth(1)}
-          className="bg-green-100 text-green-800 px-3 py-1 rounded hover:bg-green-200"
-        >
-          Next &rarr;
-        </button>
-      </div>
+    <section id="calendar" className="bg-white py-12 px-4">
+      <div className="max-w-4xl mx-auto">
+        {/* Header */}
+        <div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-3 sm:gap-0">
+          <button
+            onClick={() => changeMonth(-1)}
+            className="bg-white text-green-800 px-3 py-1 rounded border hover:bg-green-100 transition"
+          >
+            &larr; Prev
+          </button>
+          <h2 className="text-2xl sm:text-3xl font-bold text-green-800 text-center">
+            {new Date(year, month - 1).toLocaleString('default', { month: 'long' })} {year}
+          </h2>
+          <button
+            onClick={() => changeMonth(1)}
+            className="bg-white text-green-800 px-3 py-1 rounded border hover:bg-green-100 transition"
+          >
+            Next &rarr;
+          </button>
+        </div>
 
-      {/* Calendar Grid */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-3">
-        {calendarData.map((day, i) => {
-          const gregDate = day.date.gregorian.date;
-          const isCurrent = isToday(gregDate);
-          const isSelected = selectedDate === gregDate;
-          const dayEvents = getEventsForDate(gregDate);
+        {/* Calendar Grid */}
+        <div className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-4">
+          {calendarData.map((day, i) => {
+            const gregDate = day.date.gregorian.date;
+            const isCurrent = isToday(gregDate);
+            const isSelected = selectedDate === gregDate;
+            const dayEvents = getEventsForDate(gregDate);
 
-          return (
-            <div
-              key={i}
-              onClick={() => setSelectedDate(gregDate)}
-              className={`border p-2 text-sm rounded shadow-sm cursor-pointer transition ${
-                isCurrent ? 'bg-yellow-100 border-yellow-500' :
-                isSelected ? 'bg-green-100 border-green-400' : 'bg-white'
-              }`}
-            >
-              <div className="font-medium">
-                {day.date.gregorian.day} {day.date.gregorian.month.en}
-              </div>
-              <div className="text-green-700 text-xs mb-1">
-                {day.date.hijri.day} {day.date.hijri.month.en}
-              </div>
+            return (
+              <div
+                key={i}
+                onClick={() => setSelectedDate(gregDate)}
+                className={`border p-2 rounded shadow-sm cursor-pointer text-sm transition ${
+                  isCurrent ? 'bg-yellow-100 border-yellow-500' :
+                  isSelected ? 'bg-green-100 border-green-400' :
+                  'bg-white'
+                }`}
+              >
+                <div className="font-semibold">
+                  {day.date.gregorian.day} {day.date.gregorian.month.en}
+                </div>
+                <div className="text-green-700 text-xs mb-1">
+                  {day.date.hijri.day} {day.date.hijri.month.en}
+                </div>
 
-              {day.date.hijri.holidays.length > 0 && (
-                <ul className="text-[11px] text-blue-700 list-disc list-inside mb-1">
-                  {day.date.hijri.holidays
-                    .filter(h => !h.startsWith('Urs') && !h.startsWith('Birth') && !h.toLowerCase().includes('mawlid') && !h.toLowerCase().includes('bara\'at') && !h.toLowerCase().includes('ragha\'ib') && !h.toLowerCase().includes('miraj'))
-                    .map((h, j) => (
-                      <li key={j}>{h}</li>
+                {/* Filtered holidays */}
+                {day.date.hijri.holidays.length > 0 && (
+                  <ul className="text-[11px] text-blue-700 list-disc list-inside mb-1">
+                    {day.date.hijri.holidays
+                      .filter(h => !h.toLowerCase().match(/urs|birth|mawlid|bara'?at|ragha'?ib|miraj/))
+                      .map((h, j) => <li key={j}>{h}</li>)
+                    }
+                  </ul>
+                )}
+
+                {/* Events from Google Sheet */}
+                {dayEvents.length > 0 && (
+                  <ul className="text-[11px] text-purple-700 list-disc list-inside">
+                    {dayEvents.map((e, j) => (
+                      <li key={j}>{e.Title}</li>
                     ))}
-                </ul>
-              )}
+                  </ul>
+                )}
+              </div>
+            );
+          })}
+        </div>
 
-
-              {dayEvents.length > 0 && (
-                <ul className="text-[11px] text-purple-700 list-disc list-inside">
-                  {dayEvents.map((e, j) => (
-                    <li key={j}>{e.Title}</li>
-                  ))}
-                </ul>
+        {/* Events section under calendar */}
+        {selectedDate && (
+          <div className="mt-8">
+            <h3 className="text-lg font-semibold text-green-800 mb-3">
+              Events on {selectedDate.split('-').reverse().join('/')}
+            </h3>
+            <div className="space-y-4">
+              {getEventsForDate(selectedDate).length > 0 ? (
+                getEventsForDate(selectedDate).map((e, i) => (
+                  <div key={i} className="border rounded p-4 bg-green-50 shadow-sm">
+                    <h4 className="font-bold text-green-900">{e.Title}</h4>
+                    <p className="text-sm text-gray-600">{e.Time}</p>
+                    <p className="text-gray-800">{e.Description}</p>
+                  </div>
+                ))
+              ) : (
+                <p className="text-gray-500">No events for this date.</p>
               )}
             </div>
-          );
-        })}
-      </div>
-
-      {/* Selected Date Events Section */}
-      {selectedDate && (
-        <div className="mt-6">
-          <h3 className="text-lg font-semibold text-green-800 mb-2">
-            Events on {selectedDate.split('-').reverse().join('/')}
-          </h3>
-          <div className="space-y-4">
-            {getEventsForDate(selectedDate).length > 0 ? (
-              getEventsForDate(selectedDate).map((e, i) => (
-                <div key={i} className="border rounded p-4 bg-green-50 shadow-sm">
-                  <h4 className="font-bold text-green-900">{e.Title}</h4>
-                  <p className="text-sm text-gray-600">{e.Time}</p>
-                  <p className="text-gray-800">{e.Description}</p>
-                </div>
-              ))
-            ) : (
-              <p className="text-gray-500">No events for this date.</p>
-            )}
           </div>
-        </div>
-      )}
-    </div>
+        )}
+      </div>
+    </section>
   );
 }
